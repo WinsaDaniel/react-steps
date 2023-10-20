@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const messages = [
   "Learn React ⚛️",
   "Apply for jobs 💼",
@@ -5,24 +7,48 @@ const messages = [
 ];
 
 export default function App() {
-  const steps = 1;
-  return (
-    <div className="steps">
-      <div className="numbers">
-        <div className="active">1</div>
-        <div>2</div>
-        <div>3</div>
-      </div>
+  const [step, setStep] = useState(1);
+  const [isOpen, setIsOpen] = useState(true);
 
-      <p className="messages">step Hello</p>
-      <div className="buttons">
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
-          previous
-        </button>
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
-          next
-        </button>
-      </div>
-    </div>
+  function handlePrevious() {
+    if (step > 1) setStep((s) => s - 1);
+    //update func based on current state by calling function w/h is same as setStep(step-1)
+  }
+  function handleNext() {
+    if (step < 3) setStep(step + 1);
+  }
+  return (
+    <>
+      <button className="close" onClick={() => setIsOpen(!isOpen)}>
+        &times;
+      </button>
+      {isOpen && (
+        <div className="steps">
+          <div className="numbers">
+            <div className={`${step >= 1 ? "active" : ""}`}>1</div>
+            <div className={`${step >= 2 ? "active" : ""}`}>2</div>
+            <div className={`${step >= 3 ? "active" : ""}`}>3</div>
+          </div>
+          <p className="message">
+            step {step} = {messages[step - 1]}{" "}
+          </p>
+
+          <div className="buttons">
+            <button
+              style={{ backgroundColor: "#7950f2", color: "#fff" }}
+              onClick={handlePrevious}
+            >
+              previous
+            </button>
+            <button
+              style={{ backgroundColor: "#7950f2", color: "#fff" }}
+              onClick={handleNext}
+            >
+              next
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
